@@ -76,7 +76,7 @@ const replies = questions
 	replies.map((reply) => (
 <a
 	class="reply-card"
-	href={`${import.meta.env.BASE_URL}questions/${reply.id}/`}
+	href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/questions/${reply.id}/`}
 >
 			<div>
 <p class="question-mark">Q.</p>
