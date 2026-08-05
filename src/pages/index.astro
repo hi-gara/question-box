@@ -27,7 +27,7 @@ const replies = questions
 	<body>
 		<header class="header">
 			<div class="header-inner">
-				<a class="logo" href="/">{siteName}</a>
+<a class="logo" href={import.meta.env.BASE_URL}>{siteName}</a>
 
 				<a
 	class="header-link"
@@ -74,7 +74,10 @@ const replies = questions
 				<div class="reply-list">
 					{
 	replies.map((reply) => (
-		<a class="reply-card" href={`/questions/${reply.id}/`}>
+<a
+	class="reply-card"
+	href={`${import.meta.env.BASE_URL}questions/${reply.id}/`}
+>
 			<div>
 <p class="question-mark">Q.</p>
 <h3>

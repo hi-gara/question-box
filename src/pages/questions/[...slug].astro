@@ -41,7 +41,7 @@ const formUrl = "https://forms.gle/frujUr96N8YMgu8t8";
 	<body>
 		<header class="header">
 			<div class="header-inner">
-				<a class="logo" href="/">{siteName}</a>
+				<a class="logo" href={import.meta.env.BASE_URL}>{siteName}</a>
 
 				<a
 					class="header-link"
@@ -55,7 +55,9 @@ const formUrl = "https://forms.gle/frujUr96N8YMgu8t8";
 		</header>
 
 		<main>
-			<a class="back-link" href="/">← トップへ戻る</a>
+			<a class="back-link" href={import.meta.env.BASE_URL}>
+	← トップへ戻る
+</a>
 
 			<article class="reply">
 				<p class="label">QUESTION</p>
