@@ -76,8 +76,22 @@ const replies = questions
 	replies.map((reply) => (
 		<a class="reply-card" href={`/questions/${reply.id}/`}>
 			<div>
-				<p class="question-mark">Q.</p>
-				<h3>{reply.title}</h3>
+<p class="question-mark">Q.</p>
+<h3>
+	{
+		reply.title.length > 16
+			? reply.title.slice(0, 16) + "…"
+			: reply.title
+	}
+</h3>
+
+<h3>
+	{
+		reply.title.length > 16
+			? reply.title.slice(0, 16) + "…"
+			: reply.title
+	}
+</h3>
 			</div>
 
 			<div class="card-footer">
