@@ -1,32 +1,26 @@
 ---
-import {
-	getCollection,
-	render,
-	type CollectionEntry,
-} from "astro:content";
+import questions from "../../data/questions.json";
 
-export async function getStaticPaths() {
-	const replies = await getCollection(
-		"questions",
-		({ data }) => data.published,
-	);
-
-	return replies.map((reply) => ({
-		params: {
-			slug: reply.id,
-		},
-		props: {
-			reply,
-		},
-	}));
+export function getStaticPaths() {
+	return questions
+		.filter((reply) => reply.published)
+		.map((reply) => ({
+			params: {
+				slug: reply.id,
+			},
+			props: {
+				reply,
+			},
+		}));
 }
 
+type Reply = (typeof questions)[number];
+
 type Props = {
-	reply: CollectionEntry<"questions">;
+	reply: Reply;
 };
 
 const { reply } = Astro.props;
-const { Content } = await render(reply);
 
 const siteName = "hi_garaの質問箱";
 const formUrl = "https://forms.gle/frujUr96N8YMgu8t8";
@@ -39,9 +33,9 @@ const formUrl = "https://forms.gle/frujUr96N8YMgu8t8";
 		<meta name="viewport" content="width=device-width" />
 		<meta
 			name="description"
-			content={`${reply.data.title}への返信です。`}
+			content={`${reply.title}への返信です。`}
 		/>
-		<title>{reply.data.title}｜{siteName}</title>
+		<title>{reply.title}｜{siteName}</title>
 	</head>
 
 	<body>
@@ -66,18 +60,24 @@ const formUrl = "https://forms.gle/frujUr96N8YMgu8t8";
 			<article class="reply">
 				<p class="label">QUESTION</p>
 
-				<h1>{reply.data.title}</h1>
+				<h1>{reply.title}</h1>
 
 				<div class="divider"></div>
 
 				<p class="label">REPLY</p>
 
 				<div class="answer">
-					<Content />
+					{
+						reply.answer.split("\n").map((line) =>
+							line === ""
+								? <br />
+								: <p>{line}</p>
+						)
+					}
 				</div>
 
-				<time datetime={reply.data.date.toISOString()}>
-					{reply.data.date.toLocaleDateString("ja-JP")}
+				<time datetime={reply.date}>
+					{new Date(reply.date).toLocaleDateString("ja-JP")}
 				</time>
 			</article>
 		</main>
@@ -189,11 +189,11 @@ const formUrl = "https://forms.gle/frujUr96N8YMgu8t8";
 		line-height: 2;
 	}
 
-	.answer :global(p) {
+	.answer p {
 		margin: 0 0 1.5em;
 	}
 
-	.answer :global(p:last-child) {
+	.answer p:last-child {
 		margin-bottom: 0;
 	}
 

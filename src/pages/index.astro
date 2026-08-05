@@ -1,14 +1,14 @@
 ---
-import { getCollection } from "astro:content";
+import questions from "../data/questions.json";
 
 const siteName = "hi_garaの質問箱";
 const formUrl = "https://forms.gle/frujUr96N8YMgu8t8";
 
-const replies = (await getCollection("questions"))
-	.filter((reply) => reply.data.published)
+const replies = questions
+	.filter((reply) => reply.published)
 	.sort(
 		(a, b) =>
-			b.data.date.getTime() - a.data.date.getTime(),
+			new Date(b.date).getTime() - new Date(a.date).getTime(),
 	);
 ---
 
@@ -77,12 +77,12 @@ const replies = (await getCollection("questions"))
 		<a class="reply-card" href={`/questions/${reply.id}/`}>
 			<div>
 				<p class="question-mark">Q.</p>
-				<h3>{reply.data.title}</h3>
+				<h3>{reply.title}</h3>
 			</div>
 
 			<div class="card-footer">
 				<time>
-					{reply.data.date.toLocaleDateString("ja-JP")}
+					{new Date(reply.date).toLocaleDateString("ja-JP")}
 				</time>
 				<span class="arrow" aria-hidden="true">→</span>
 			</div>
