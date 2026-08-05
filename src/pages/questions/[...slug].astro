@@ -1,0 +1,231 @@
+---
+import {
+	getCollection,
+	render,
+	type CollectionEntry,
+} from "astro:content";
+
+export async function getStaticPaths() {
+	const replies = await getCollection(
+		"questions",
+		({ data }) => data.published,
+	);
+
+	return replies.map((reply) => ({
+		params: {
+			slug: reply.id,
+		},
+		props: {
+			reply,
+		},
+	}));
+}
+
+type Props = {
+	reply: CollectionEntry<"questions">;
+};
+
+const { reply } = Astro.props;
+const { Content } = await render(reply);
+
+const siteName = "hi_garaの質問箱";
+const formUrl = "https://forms.gle/frujUr96N8YMgu8t8";
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta
+			name="description"
+			content={`${reply.data.title}への返信です。`}
+		/>
+		<title>{reply.data.title}｜{siteName}</title>
+	</head>
+
+	<body>
+		<header class="header">
+			<div class="header-inner">
+				<a class="logo" href="/">{siteName}</a>
+
+				<a
+					class="header-link"
+					href={formUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					質問する ↗
+				</a>
+			</div>
+		</header>
+
+		<main>
+			<a class="back-link" href="/">← トップへ戻る</a>
+
+			<article class="reply">
+				<p class="label">QUESTION</p>
+
+				<h1>{reply.data.title}</h1>
+
+				<div class="divider"></div>
+
+				<p class="label">REPLY</p>
+
+				<div class="answer">
+					<Content />
+				</div>
+
+				<time datetime={reply.data.date.toISOString()}>
+					{reply.data.date.toLocaleDateString("ja-JP")}
+				</time>
+			</article>
+		</main>
+
+		<footer>
+			<p>© 2026 {siteName}</p>
+		</footer>
+	</body>
+</html>
+
+<style>
+	:global(*) {
+		box-sizing: border-box;
+	}
+
+	:global(html) {
+		background: #f2f3f4;
+		color: #27292c;
+		font-family:
+			"Yu Gothic UI",
+			"Yu Gothic",
+			"BIZ UDPGothic",
+			"Meiryo",
+			sans-serif;
+	}
+
+	:global(body) {
+		margin: 0;
+		min-width: 320px;
+		background: #f2f3f4;
+	}
+
+	:global(a) {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.header {
+		border-bottom: 1px solid #dfe1e3;
+		background: #f7f8f8;
+	}
+
+	.header-inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: min(100% - 40px, 1040px);
+		height: 72px;
+		margin: 0 auto;
+	}
+
+	.logo {
+		font-size: 16px;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+	}
+
+	.header-link {
+		color: #666a70;
+		font-size: 14px;
+		font-weight: 600;
+	}
+
+	main {
+		width: min(100% - 40px, 760px);
+		min-height: calc(100vh - 154px);
+		margin: 0 auto;
+		padding: 64px 0 112px;
+	}
+
+	.back-link {
+		display: inline-block;
+		margin-bottom: 32px;
+		color: #70747a;
+		font-size: 13px;
+		font-weight: 600;
+	}
+
+	.reply {
+		padding: 48px;
+		border: 1px solid #dfe1e3;
+		background: #fafafa;
+		box-shadow: 0 3px 16px rgb(40 42 45 / 4%);
+	}
+
+	.label {
+		margin: 0 0 16px;
+		color: #7b7f85;
+		font-size: 11px;
+		font-weight: 700;
+		letter-spacing: 0.22em;
+	}
+
+	h1 {
+		margin: 0;
+		font-size: clamp(25px, 5vw, 36px);
+		line-height: 1.6;
+		letter-spacing: 0.03em;
+	}
+
+	.divider {
+		height: 1px;
+		margin: 40px 0;
+		background: #dfe1e3;
+	}
+
+	.answer {
+		font-size: 16px;
+		line-height: 2;
+	}
+
+	.answer :global(p) {
+		margin: 0 0 1.5em;
+	}
+
+	.answer :global(p:last-child) {
+		margin-bottom: 0;
+	}
+
+	time {
+		display: block;
+		margin-top: 48px;
+		color: #85898f;
+		font-size: 12px;
+		text-align: right;
+	}
+
+	footer {
+		padding: 32px 20px;
+		border-top: 1px solid #dfe1e3;
+		color: #85898f;
+		font-size: 11px;
+		letter-spacing: 0.08em;
+		text-align: center;
+	}
+
+	@media (max-width: 600px) {
+		.header-inner,
+		main {
+			width: min(100% - 32px, 760px);
+		}
+
+		main {
+			padding: 40px 0 80px;
+		}
+
+		.reply {
+			padding: 28px 24px;
+		}
+	}
+</style>
