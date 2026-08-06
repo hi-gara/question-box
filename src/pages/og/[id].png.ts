@@ -1,5 +1,8 @@
 import type { APIContext, GetStaticPaths } from "astro";
+import fs from "node:fs";
+import path from "node:path";
 import sharp from "sharp";
+import satori from "satori";
 import questions from "../../data/questions.json";
 
 export const getStaticPaths = (() => {
@@ -21,108 +24,180 @@ type Props = {
 	reply: Reply;
 };
 
-function escapeXml(text: string) {
-	return text
-		.replaceAll("&", "&amp;")
-		.replaceAll("<", "&lt;")
-		.replaceAll(">", "&gt;")
-		.replaceAll('"', "&quot;")
-		.replaceAll("'", "&apos;");
+function bufferToArrayBuffer(buffer: Buffer): ArrayBuffer {
+	return buffer.buffer.slice(
+		buffer.byteOffset,
+		buffer.byteOffset + buffer.byteLength,
+	) as ArrayBuffer;
 }
 
-function splitText(text: string, maxLength = 24) {
+const regularFontBuffer = fs.readFileSync(
+	path.join(
+		process.cwd(),
+		"src/assets/fonts/BIZUDPGothic-Regular.ttf",
+	),
+);
+
+const boldFontBuffer = fs.readFileSync(
+	path.join(
+		process.cwd(),
+		"src/assets/fonts/BIZUDPGothic-Bold.ttf",
+	),
+);
+
+const regularFont = bufferToArrayBuffer(regularFontBuffer);
+const boldFont = bufferToArrayBuffer(boldFontBuffer);
+
+function splitText(text: string, maxLength = 22) {
 	const characters = Array.from(text.trim());
 	const lines: string[] = [];
 
-	for (let index = 0; index < characters.length; index += maxLength) {
+	for (
+		let index = 0;
+		index < characters.length;
+		index += maxLength
+	) {
 		lines.push(
-			characters.slice(index, index + maxLength).join(""),
+			characters
+				.slice(index, index + maxLength)
+				.join(""),
 		);
 	}
 
-	return lines.slice(0, 4);
+	const visibleLines = lines.slice(0, 4);
+
+	if (lines.length > 4) {
+		const lastIndex = visibleLines.length - 1;
+		const lastLine = visibleLines[lastIndex];
+
+		visibleLines[lastIndex] =
+			lastLine.slice(0, Math.max(lastLine.length - 1, 0)) + "…";
+	}
+
+	return visibleLines;
 }
 
 export async function GET({ props }: APIContext<Props>) {
 	const { reply } = props;
+	const lines = splitText(reply.title);
 
-	const lines = splitText(reply.title, 24);
-
-	const textElements = lines
-		.map((line, index) => {
-			const y = 245 + index * 72;
-
-			return `
-				<text
-					x="600"
-					y="${y}"
-					text-anchor="middle"
-					font-family="'BIZ UDPGothic','Yu Gothic UI','Yu Gothic',sans-serif"
-					font-size="44"
-					font-weight="600"
-					fill="#27292c"
-				>${escapeXml(line)}</text>
-			`;
-		})
-		.join("");
-
-	const svg = `
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="1200"
-			height="630"
-			viewBox="0 0 1200 630"
-		>
-			<rect
-				width="1200"
-				height="630"
-				fill="#f2f3f4"
-			/>
-
-			<rect
-				x="44"
-				y="44"
-				width="1112"
-				height="542"
-				rx="20"
-				fill="#fafafa"
-				stroke="#dfe1e3"
-				stroke-width="2"
-			/>
-
-			<text
-				x="600"
-				y="120"
-				text-anchor="middle"
-				font-family="sans-serif"
-				font-size="22"
-				font-weight="700"
-				letter-spacing="6"
-				fill="#777b81"
-			>QUESTION</text>
-
-			${textElements}
-
-			<line
-				x1="160"
-				y1="500"
-				x2="1040"
-				y2="500"
-				stroke="#dfe1e3"
-				stroke-width="2"
-			/>
-
-			<text
-				x="600"
-				y="550"
-				text-anchor="middle"
-				font-family="sans-serif"
-				font-size="24"
-				font-weight="700"
-				fill="#666a70"
-			>hi_garaの質問箱</text>
-		</svg>
-	`;
+	const svg = await satori(
+		{
+			type: "div",
+			props: {
+				style: {
+					width: "1200px",
+					height: "630px",
+					display: "flex",
+					padding: "44px",
+					backgroundColor: "#f2f3f4",
+					fontFamily: "BIZ UDPGothic",
+				},
+				children: {
+					type: "div",
+					props: {
+						style: {
+							width: "100%",
+							height: "100%",
+							display: "flex",
+							flexDirection: "column",
+							alignItems: "center",
+							padding: "52px 70px 28px",
+							border: "2px solid #dfe1e3",
+							borderRadius: "20px",
+							backgroundColor: "#fafafa",
+						},
+						children: [
+							{
+								type: "div",
+								props: {
+									style: {
+										display: "flex",
+										fontSize: "22px",
+										fontWeight: 700,
+										letterSpacing: "6px",
+										color: "#777b81",
+									},
+									children: "QUESTION",
+								},
+							},
+							{
+								type: "div",
+								props: {
+									style: {
+										flex: 1,
+										width: "100%",
+										display: "flex",
+										flexDirection: "column",
+										alignItems: "center",
+										justifyContent: "center",
+										gap: "14px",
+										fontSize: "42px",
+										fontWeight: 700,
+										lineHeight: 1.45,
+										color: "#27292c",
+									},
+									children: lines.map((line) => ({
+										type: "div",
+										props: {
+											style: {
+												display: "flex",
+												justifyContent: "center",
+												width: "100%",
+											},
+											children: line,
+										},
+									})),
+								},
+							},
+							{
+								type: "div",
+								props: {
+									style: {
+										width: "880px",
+										height: "2px",
+										display: "flex",
+										backgroundColor: "#dfe1e3",
+									},
+								},
+							},
+							{
+								type: "div",
+								props: {
+									style: {
+										display: "flex",
+										marginTop: "22px",
+										fontSize: "24px",
+										fontWeight: 700,
+										color: "#666a70",
+									},
+									children: "hi_garaの質問箱",
+								},
+							},
+						],
+					},
+				},
+			},
+		},
+		{
+			width: 1200,
+			height: 630,
+			fonts: [
+				{
+					name: "BIZ UDPGothic",
+					data: regularFont,
+					weight: 400,
+					style: "normal",
+				},
+				{
+					name: "BIZ UDPGothic",
+					data: boldFont,
+					weight: 700,
+					style: "normal",
+				},
+			],
+		},
+	);
 
 	const png = await sharp(Buffer.from(svg))
 		.png()
@@ -131,7 +206,7 @@ export async function GET({ props }: APIContext<Props>) {
 	return new Response(new Uint8Array(png), {
 		headers: {
 			"Content-Type": "image/png",
-			"Cache-Control": "public, max-age=31536000, immutable",
+			"Cache-Control": "no-cache",
 		},
 	});
 }
