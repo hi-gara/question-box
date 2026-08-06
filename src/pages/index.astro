@@ -80,13 +80,7 @@ const replies = questions
 >
 			<div>
 <p class="question-mark">Q.</p>
-<h3>
-	{
-		reply.title.length > 16
-			? reply.title.slice(0, 16) + "…"
-			: reply.title
-	}
-</h3>
+<h3>{reply.title}</h3>
 
 			</div>
 
@@ -284,11 +278,18 @@ const replies = questions
 	}
 
 	h3 {
-		margin: 0;
-		font-size: 19px;
-		line-height: 1.7;
-		letter-spacing: 0.02em;
-	}
+	margin: 0;
+	font-size: 19px;
+	line-height: 1.7;
+	letter-spacing: 0.02em;
+
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 
 	.card-footer {
 		display: flex;
@@ -340,7 +341,7 @@ const replies = questions
 		}
 
 		.reply-card {
-			min-height: 160px;
+			height: 220px;
 			padding: 24px;
 		}
 	}
