@@ -35,6 +35,17 @@ const ogDescription =
 	reply.title.length > 80
 		? reply.title.slice(0, 80) + "…"
 		: reply.title;
+
+		const pageUrl =
+	`https://hi-gara.github.io/question-box/questions/${reply.id}/`;
+
+const ogImageUrl =
+	`https://hi-gara.github.io/question-box/og/${reply.id}.png`;
+
+const ogDescription =
+	reply.title.length > 80
+		? reply.title.slice(0, 80) + "…"
+		: reply.title;
 ---
 
 <!doctype html>
@@ -66,6 +77,23 @@ const ogDescription =
 	<meta name="twitter:title" content={`${reply.title}｜${siteName}`} />
 	<meta name="twitter:description" content={ogDescription} />
 	<meta name="twitter:image" content={ogImageUrl} />
+
+	<link rel="canonical" href={pageUrl} />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:title" content={`${reply.title}｜${siteName}`} />
+<meta property="og:description" content={ogDescription} />
+<meta property="og:url" content={pageUrl} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:type" content="image/png" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={`${reply.title}｜${siteName}`} />
+<meta name="twitter:description" content={ogDescription} />
+<meta name="twitter:image" content={ogImageUrl} />
 </head>
 
 	<body>
