@@ -85,8 +85,6 @@ const replies = questions
 						<p class="section-label">LATEST REPLIES</p>
 						<h2>最近の返信</h2>
 					</div>
-
-					<a class="view-all" href="#">すべて見る →</a>
 				</div>
 
 				<div class="reply-list">
@@ -239,23 +237,16 @@ const replies = questions
 	}
 
 	.section-heading {
-		display: flex;
-		align-items: end;
-		justify-content: center;
-		margin-bottom: 28px;
-	}
+	display: flex;
+	align-items: end;
+	justify-content: flex-start;
+	margin-bottom: 28px;
+}
 
 	h2 {
 		margin: 0;
 		font-size: 28px;
 		letter-spacing: 0.04em;
-	}
-
-	.view-all {
-		padding-bottom: 3px;
-		color: #696d73;
-		font-size: 13px;
-		font-weight: 600;
 	}
 
 	.reply-list {
@@ -356,7 +347,7 @@ const replies = questions
 		}
 
 		.reply-card {
-			height: 220px;
+			height: 160px;
 			padding: 24px;
 		}
 	}
