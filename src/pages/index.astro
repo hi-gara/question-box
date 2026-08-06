@@ -12,10 +12,7 @@ const formUrl = "https://forms.gle/frujUr96N8YMgu8t8";
 
 const replies = questions
 	.filter((reply) => reply.published)
-	.sort(
-		(a, b) =>
-			new Date(b.date).getTime() - new Date(a.date).getTime(),
-	);
+	.sort((a, b) => Number(b.id) - Number(a.id));
 ---
 
 <!doctype html>
