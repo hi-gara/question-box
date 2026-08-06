@@ -31,22 +31,22 @@ function bufferToArrayBuffer(buffer: Buffer): ArrayBuffer {
 	) as ArrayBuffer;
 }
 
-const regularFontBuffer = fs.readFileSync(
-	path.join(
-		process.cwd(),
-		"src/assets/fonts/BIZUDPGothic-Regular.ttf",
-	),
+const regularFontPath = path.join(
+	process.cwd(),
+	"src/assets/fonts/LINESeedJP_A_TTF_Rg.ttf",
 );
 
-const boldFontBuffer = fs.readFileSync(
-	path.join(
-		process.cwd(),
-		"src/assets/fonts/BIZUDPGothic-Bold.ttf",
-	),
+const boldFontPath = path.join(
+	process.cwd(),
+	"src/assets/fonts/LINESeedJP_A_TTF_Bd.ttf",
 );
+
+const regularFontBuffer = fs.readFileSync(regularFontPath);
+const boldFontBuffer = fs.readFileSync(boldFontPath);
 
 const regularFont = bufferToArrayBuffer(regularFontBuffer);
 const boldFont = bufferToArrayBuffer(boldFontBuffer);
+
 
 function splitText(text: string, maxLength = 22) {
 	const characters = Array.from(text.trim());
@@ -91,7 +91,7 @@ export async function GET({ props }: APIContext<Props>) {
 					display: "flex",
 					padding: "44px",
 					backgroundColor: "#f2f3f4",
-					fontFamily: "BIZ UDPGothic",
+					fontFamily: "LINE Seed JP",
 				},
 				children: {
 					type: "div",
@@ -184,7 +184,7 @@ export async function GET({ props }: APIContext<Props>) {
 			height: 630,
 			fonts: [
 				{
-					name: "BIZ UDPGothic",
+					name: "LINE Seed JP",
 					data: regularFont,
 					weight: 400,
 					style: "normal",
