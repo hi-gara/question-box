@@ -43,80 +43,79 @@ const replies = questions
 	<meta name="twitter:image" content={ogImageUrl} />
 </head>
 
-	<body>
-		<header class="header">
-			<div class="header-inner">
-<a class="logo" href={import.meta.env.BASE_URL}>{siteName}</a>
+<body>
+	<header class="header">
+		<div class="header-inner">
+			<a class="logo" href={import.meta.env.BASE_URL}>{siteName}</a>
 
-				<a
-	class="header-link"
-	href={formUrl}
-	target="_blank"
-	rel="noopener noreferrer"
->
-	質問する ↗
-</a>
-			</div>
-		</header>
+			<a
+				class="header-link"
+				href={formUrl}
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				質問する ↗
+			</a>
+		</div>
+	</header>
 
-		<main>
-			<section class="hero">
-				<p class="eyebrow">QUESTION & ANSWER</p>
+	<main>
+		<section class="hero">
+			<p class="eyebrow">QUESTION & ANSWER</p>
 
-				<h1>{siteName}</h1>
+			<h1>{siteName}</h1>
 
-				<p class="description">
-					Googleフォームから届いた質問に、ひとつずつお返事しています。
-				</p>
+			<p class="description">
+				Googleフォームから届いた質問に、ひとつずつお返事しています。
+			</p>
 
-				<a
-	class="form-button"
-	href={formUrl}
-	target="_blank"
-	rel="noopener noreferrer"
->
-	質問を送る
-</a>
-			</section>
+			<a
+				class="form-button"
+				href={formUrl}
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				質問を送る
+			</a>
+		</section>
 
-			<section class="replies">
-				<div class="section-heading">
-					<div>
-						<p class="section-label">LATEST REPLIES</p>
-						<h2>最近の返信</h2>
-					</div>
+		<section class="replies">
+			<div class="section-heading">
+				<div>
+					<p class="section-label">LATEST REPLIES</p>
+					<h2>最近の返信</h2>
 				</div>
-
-				<div class="reply-list">
-					{
-	replies.map((reply) => (
-<a
-	class="reply-card"
-	href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/questions/${reply.id}/`}
->
-			<div>
-<p class="question-mark">Q.</p>
-<h3>{reply.title}</h3>
-
 			</div>
 
-			<div class="card-footer">
-				<time>
-					{new Date(reply.date).toLocaleDateString("ja-JP")}
-				</time>
-				<span class="arrow" aria-hidden="true">→</span>
-			</div>
-		</a>
-	))
-}
-				</div>
-			</section>
-		</main>
+			<div class="reply-list">
+				{
+					replies.map((reply) => (
+						<a
+							class="reply-card"
+							href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/questions/${reply.id}/`}
+						>
+							<div>
+								<p class="question-mark">Q.</p>
+								<h3>{reply.title}</h3>
+							</div>
 
-		<footer>
-			<p>© 2026 {siteName}</p>
-		</footer>
-	</body>
+							<div class="card-footer">
+								<time>
+									{new Date(reply.date).toLocaleDateString("ja-JP")}
+								</time>
+								<span class="arrow" aria-hidden="true">→</span>
+							</div>
+						</a>
+					))
+				}
+			</div>
+		</section>
+	</main>
+
+	<footer>
+		<p>© 2026 {siteName}</p>
+	</footer>
+</body>
 </html>
 
 <style>
@@ -125,8 +124,8 @@ const replies = questions
 	}
 
 	:global(html) {
-		background: #f2f3f4;
-		color: #27292c;
+		background: #2f2e33;
+		color: #ecebec;
 		font-family:
 			"Yu Gothic UI",
 			"Yu Gothic",
@@ -141,9 +140,9 @@ const replies = questions
 		background:
 			linear-gradient(
 				180deg,
-				#f7f8f8 0,
-				#f2f3f4 480px,
-				#f2f3f4 100%
+				#343339 0,
+				#2f2e33 480px,
+				#2f2e33 100%
 			);
 	}
 
@@ -153,7 +152,7 @@ const replies = questions
 	}
 
 	.header {
-		border-bottom: 1px solid #dfe1e3;
+		border-bottom: 1px solid #4a494f;
 	}
 
 	.header-inner {
@@ -172,7 +171,7 @@ const replies = questions
 	}
 
 	.header-link {
-		color: #666a70;
+		color: #a8a6aa;
 		font-size: 14px;
 		font-weight: 600;
 	}
@@ -190,7 +189,7 @@ const replies = questions
 	.eyebrow,
 	.section-label {
 		margin: 0 0 14px;
-		color: #7b7f85;
+		color: #a8a6aa;
 		font-size: 11px;
 		font-weight: 700;
 		letter-spacing: 0.22em;
@@ -205,41 +204,41 @@ const replies = questions
 
 	.description {
 		margin: 28px 0 0;
-		color: #686c72;
+		color: #b8b6ba;
 		font-size: 15px;
 		line-height: 2;
 	}
 
 	.form-button {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	min-width: 190px;
-	margin-top: 36px;
-	padding: 15px 28px;
-	border: 1px solid #303236;
-	background: #303236;
-	color: #fff;
-	font-size: 14px;
-	font-weight: 700;
-}
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 190px;
+		margin-top: 36px;
+		padding: 15px 28px;
+		border: 1px solid #84b9cb;
+		background: #84b9cb;
+		color: #24252a;
+		font-size: 14px;
+		font-weight: 700;
+	}
 
 	.form-button:hover {
 		transform: translateY(-2px);
-		background: #45484d;
+		background: #9bc9d8;
 	}
 
 	.replies {
 		padding: 68px 0 112px;
-		border-top: 1px solid #dfe1e3;
+		border-top: 1px solid #4a494f;
 	}
 
 	.section-heading {
-	display: flex;
-	align-items: end;
-	justify-content: flex-start;
-	margin-bottom: 28px;
-}
+		display: flex;
+		align-items: end;
+		justify-content: flex-start;
+		margin-bottom: 28px;
+	}
 
 	h2 {
 		margin: 0;
@@ -258,9 +257,9 @@ const replies = questions
 		flex-direction: column;
 		justify-content: space-between;
 		padding: 28px;
-		border: 1px solid #dfe1e3;
-		background: #fafafa;
-		box-shadow: 0 3px 16px rgb(40 42 45 / 4%);
+		border: 1px solid #4a494f;
+		background: #38373d;
+		box-shadow: 0 3px 16px rgb(0 0 0 / 15%);
 		transition:
 			transform 160ms ease,
 			border-color 160ms ease,
@@ -269,38 +268,38 @@ const replies = questions
 
 	.reply-card:hover {
 		transform: translateY(-3px);
-		border-color: #c5c8cc;
-		box-shadow: 0 8px 24px rgb(40 42 45 / 8%);
+		border-color: #68666d;
+		box-shadow: 0 8px 24px rgb(0 0 0 / 25%);
 	}
 
 	.question-mark {
 		margin: 0 0 14px;
-		color: #777b81;
+		color: #a8a6aa;
 		font-size: 13px;
 		font-weight: 700;
 		letter-spacing: 0.12em;
 	}
 
 	h3 {
-	margin: 0;
-	font-size: 19px;
-	line-height: 1.7;
-	letter-spacing: 0.02em;
+		margin: 0;
+		font-size: 19px;
+		line-height: 1.7;
+		letter-spacing: 0.02em;
 
-	display: -webkit-box;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 2;
-	line-clamp: 2;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 
 	.card-footer {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		margin-top: 30px;
-		color: #777b81;
+		color: #a8a6aa;
 		font-size: 12px;
 	}
 
@@ -315,8 +314,8 @@ const replies = questions
 
 	footer {
 		padding: 32px 20px;
-		border-top: 1px solid #dfe1e3;
-		color: #85898f;
+		border-top: 1px solid #4a494f;
+		color: #8f8d92;
 		font-size: 11px;
 		letter-spacing: 0.08em;
 		text-align: center;
